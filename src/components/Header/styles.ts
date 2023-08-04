@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.main`
+export const Wrapper = styled.header`
+  
   background-color: #06092b;
   color: #fff;
   width: 100%;
-  height: 100%;
+  min-height: 10%;
+  max-height: 15%;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -19,16 +21,6 @@ export const Title = styled.h1`
 `;
 
 export const Logo = styled.img`
-  width: 25rem;
-  margin-bottom: 2.5rem;
-`;
+  width: 20rem;
 
-export const Description = styled.h2`
-  font-size: 2rem;
-  font-weight: 400;
-`;
-
-export const Illustration = styled.img`
-  margin-top: 3rem;
-  width: min-content(30rem, 100%);
 `;

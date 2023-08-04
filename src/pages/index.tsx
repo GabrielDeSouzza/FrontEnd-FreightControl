@@ -1,6 +1,5 @@
-import Main from 'components/Main';
+import Main from '../components/LoginPage/LoginPage';
 
-// eslint-disable-next-line prettier/prettier
 export default function Home() {
   return <Main />;
 }
