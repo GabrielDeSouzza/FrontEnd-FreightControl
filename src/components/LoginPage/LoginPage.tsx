@@ -1,48 +1,75 @@
-import React, { useState } from 'react';
+import React, { FormEventHandler, FormEvent, useEffect, useState } from 'react';
 import * as S from './styles';
 import Header from 'components/Header/Header';
-import Form from 'components/Form/Form';
 import { z } from 'zod';
-import { IFormsProps } from 'types/FormsProps';
-import { InputProps } from 'types/inputProps';
+import api from 'services/api';
+import Input from 'components/Input/Input';
+import { ErrorValidation } from 'types/IErrorValidation';
+import Button from 'components/Button/Button';
+import { AxiosError } from 'axios';
+
 
 const loginUserFormSchema = z.object({
   username: z.string().nonempty('Campo usuário é obrigatório'),
-  password: z.string().nonempty('Campo senha é obrigatório').min(6, 'A senha deve ter pelo menos 6 caracteres'),
+  password: z.string().nonempty('Campo senha é obrigatório')
 });
-const LoginPage: React.FC = () => {
-  const handleSubmit = (formData: { [key: string]: string }) => {
-    // Aqui você pode fazer a lógica para autenticar o usuário usando os dados do formulário.
-    // Por exemplo, você pode enviar os dados para o servidor usando uma requisição HTTP.
-    console.log('Formulário enviado:', formData);
+
+const LoginPage =() => {
+  const [username, setUsername]= useState('')
+  const [password, setPassword] = useState('')
+  const [errorValidation, setErrorValidation] = useState<ErrorValidation[]>([]);
+  const [validateUSer, setValidationUser] = useState<string>('')
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const data = loginUserFormSchema.parse({ username, password });
+      const result = await api.post('/api/login', data);
+      if(result.status >= 400)
+        setValidationUser('Senha incorreta')
+      console.log(result)
+      setErrorValidation([]);
+      setValidationUser('')
+    } catch (error) {
+      console.error(error);
+      if (error instanceof z.ZodError) {
+        console.log(error);
+        const erros: ErrorValidation[] = error.issues.map((issue) => ({
+          message: issue.message,
+          path: issue.path.toString(),
+        }))
+        setErrorValidation(erros);
+        return
+      }
+      else if(error instanceof AxiosError){
+        if(error.request.status == 406)
+          setValidationUser("Senha ou Usuario invalido")
+        return
+      }
+      setValidationUser('')
+      setErrorValidation([]);
+  }
   };
   
-  const [username, setUsername]= useState('')
-  const [passoword, setPassword] = useState('')
-
-  const formFields: [InputProps] =[{label : "Username",
-    name: "username",
-    placeholder: "digite o seu username",
-    type: "text",
-    value: username,
-    onChange(event) {
-      setUsername(event.target.value)
-    },
-  }
-]
-  
-formFields.push({label : "Password",
-name: "Password",
-placeholder: "digite o sua senha",
-type: "password",
-value: passoword,
-onChange(event) {
-  setPassword(event.target.value)
-},})
   return (
     <S.Wrapper>
       <Header />
-      <Form fields={formFields} onSubmit={handleSubmit} schemaValidation={loginUserFormSchema} />
+      <S.Form method='post' onSubmit={handleSubmit}>
+        <S.InputsArea>
+          <Input label='Usuario' name='Usuario' placeholder='Digite o seu usuario'
+          type='text' onChange={e=> setUsername(e.target.value)}></Input>
+          {errorValidation?errorValidation?.map((erro)=>(
+           <S.spanError>{erro.path === "username"?erro.message:''}</S.spanError>
+        )): null}
+          <Input label='Senha' name='senha' placeholder='Digite o sua Senha'
+          type='text' onChange={e=> setPassword(e.target.value)}></Input>
+          {errorValidation?errorValidation?.map((erro)=>(
+           <S.spanError>{erro.path === "password"?erro.message:''}</S.spanError>
+        )): null}
+        </S.InputsArea>
+        {validateUSer.length > 0? <S.spanError>{validateUSer}</S.spanError>:''}
+        <Button value='Logar-se' typeButton='submit'></Button>
+      </S.Form>
     </S.Wrapper>
   );
 };

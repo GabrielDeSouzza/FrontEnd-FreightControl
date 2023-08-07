@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import * as S from './styles';
+import { boolean } from 'zod';
 
-const Button = () => {
-  const [value, setValue] = useState("")
-  const handleChange = (event: React.ChangeEvent<HTMLButtonElement>)=> {
-    setValue(event.target.value)
-  }
-
+const Button = function ({
+  value = "value",
+  typeButton ="button"
+}) {
   return (
-    <S.Buttom value={value} onChange={handleChange}></S.Buttom>
+    <S.Buttom type={typeButton} >{value}</S.Buttom>
   )
 }
 
