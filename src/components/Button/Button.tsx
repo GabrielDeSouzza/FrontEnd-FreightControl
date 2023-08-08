@@ -1,12 +1,21 @@
 import * as S from './styles';
 
-const Button = function ({ value = 'value', typeButton = 'button' }) {
-  const validTypeButton = ['button', 'submit', 'reset', 'undefined'].includes(
-    typeButton
-  )
-    ? typeButton
-    : 'button';
-  return <S.Buttom type={validTypeButton}>{value}</S.Buttom>;
+interface MeuComponenteProps {
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  children: React.ReactNode | null;
+  value: string;
+  typeButton: string;
+}
+const Button: React.FC<MeuComponenteProps> = function ({
+  value = 'value',
+  typeButton = 'button',
+  children = null,
+}) {
+  return (
+    <S.Buttom type={typeButton} value={value}>
+      {children}
+    </S.Buttom>
+  );
 };
 
 export default Button;

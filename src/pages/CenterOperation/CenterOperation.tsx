@@ -1,10 +1,17 @@
 import Input from 'components/Input/Input';
 import * as S from './styles';
 import Header from 'components/Header/Header';
-import Button from 'components/Button/Button';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React from 'react';
 
 const CenterOperation = function () {
+  const router = useRouter();
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    console.log(event.currentTarget.attributes.item(1));
+    router.push(event.currentTarget.getAttribute('value') as string);
+  };
   return (
     <>
       <Header />
@@ -20,7 +27,10 @@ const CenterOperation = function () {
         </S.SearchArea>
         <S.Container>
           <S.Content>
-            <S.linkFromContent>
+            <S.linkFromContent
+              value={'/Motorista/Motorista'}
+              onClick={handleClick}
+            >
               <S.Image src="/img/x.png"></S.Image>
               Cadastro de motorista
             </S.linkFromContent>

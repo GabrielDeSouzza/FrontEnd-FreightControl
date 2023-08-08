@@ -34,7 +34,8 @@ export const Content = styled.div`
   border-radius: 10px;
 `;
 
-export const linkFromContent = styled.div`
+export const linkFromContent = styled.button`
+  border-style: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
