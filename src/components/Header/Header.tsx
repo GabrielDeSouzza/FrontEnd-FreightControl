@@ -1,9 +1,6 @@
 import * as S from './styles';
-import Button from '../Button/Button'
-const Header = function ({
-  title = 'React Avancado',
-  description = 'TypeScript, ReactJS, NextJS e Styled Components',
-}) {
+
+const Header = function () {
   return (
     <S.Wrapper>
       <S.Logo src="/img/logo.png" />

@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react/';
-import {Wrapper} from './styles';
+
 import Button from './Button';
 
 export default {
@@ -10,6 +10,6 @@ export default {
 type Story = StoryObj<typeof Button>;
 export const Basic: Story = {
   args: {
-    text: 'test',
+    value: 'test',
   },
 };

@@ -1,15 +1,12 @@
-import { useState } from 'react';
 import * as S from './styles';
 
-const Button = () => {
-  const [value, setValue] = useState("")
-  const handleChange = (event: React.ChangeEvent<HTMLButtonElement>)=> {
-    setValue(event.target.value)
-  }
-
-  return (
-    <S.Buttom value={value} onChange={handleChange}></S.Buttom>
+const Button = function ({ value = 'value', typeButton = 'button' }) {
+  const validTypeButton = ['button', 'submit', 'reset', 'undefined'].includes(
+    typeButton
   )
-}
+    ? typeButton
+    : 'button';
+  return <S.Buttom type={validTypeButton}>{value}</S.Buttom>;
+};
 
 export default Button;
