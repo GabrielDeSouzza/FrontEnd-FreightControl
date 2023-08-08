@@ -11,5 +11,4 @@ describe('<LoginPage />', () => {
     ).toBeInTheDocument();
     expect(container.firstChild).toMatchSnapshot();
   });
- 
 });

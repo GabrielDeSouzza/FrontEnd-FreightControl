@@ -1,4 +1,4 @@
 export interface ErrorValidation {
-    message: string;
-    path: string;
+  message: string;
+  path: string;
 }
