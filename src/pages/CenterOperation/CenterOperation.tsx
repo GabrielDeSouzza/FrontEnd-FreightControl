@@ -27,10 +27,7 @@ const CenterOperation = function () {
         </S.SearchArea>
         <S.Container>
           <S.Content>
-            <S.linkFromContent
-              value={'/Motorista/Motorista'}
-              onClick={handleClick}
-            >
+            <S.linkFromContent value={'/Driver/Driver'} onClick={handleClick}>
               <S.Image src="/img/x.png"></S.Image>
               Cadastro de motorista
             </S.linkFromContent>

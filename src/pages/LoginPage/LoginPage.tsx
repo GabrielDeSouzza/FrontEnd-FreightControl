@@ -7,7 +7,6 @@ import Input from 'components/Input/Input';
 import { ErrorValidation } from 'types/IErrorValidation';
 import Button from 'components/Button/Button';
 import { AxiosError } from 'axios';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 const loginUserFormSchema = z.object({
@@ -15,7 +14,7 @@ const loginUserFormSchema = z.object({
   password: z.string().nonempty('Campo senha é obrigatório'),
 });
 
-const LoginPage: any = () => {
+const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorValidation, setErrorValidation] = useState<ErrorValidation[]>([]);
@@ -98,7 +97,7 @@ const LoginPage: any = () => {
         ) : (
           ''
         )}
-        <Button value="Logar-se" typeButton="submit"></Button>
+        <Button value="Logar-se" typeButton=""></Button>
       </S.Form>
     </S.Wrapper>
   );

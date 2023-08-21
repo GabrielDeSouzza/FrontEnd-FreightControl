@@ -1,33 +1,31 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import * as S from './styles';
-import { InputProps } from 'types/InputProps';
+import { InputPropsWithMask } from 'types/InputProps';
 import { Controller } from 'react-hook-form';
-
-export const Input: React.FC<InputProps> = function ({
+import { useIMask } from 'react-imask';
+export const InputWithMask: React.FC<InputPropsWithMask> = function ({
   label = 'label',
   placeholder = 'placeholder',
   name = 'name',
   type = 'text',
-  onClick,
-  onKeyDown,
+  mask,
   messageError,
   onChange,
-  value,
 }) {
+  const mas = useIMask({ mask: mask });
   return (
     <S.Wrapper>
       <S.Label htmlFor={name}> {label}</S.Label>
+
       <S.Input
-        type={type}
-        placeholder={placeholder}
-        onClick={onClick}
-        onKeyDown={onKeyDown}
         onChange={onChange}
-        value={value}
+        placeholder={placeholder}
+        type={type}
       ></S.Input>
+
       <S.SpanError>{messageError}</S.SpanError>
     </S.Wrapper>
   );
 };
 
-export default Input;
+export default InputWithMask;

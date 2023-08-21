@@ -1,3 +1,4 @@
+import { IMaskInput } from 'react-imask';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
@@ -9,7 +10,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Input = styled.input`
-  padding: 2px;
+  padding-left: 2px;
   font-size: 1.5em;
   height: 3rem;
   width: 25rem;
@@ -21,7 +22,6 @@ export const Label = styled.label`
   font-size: 1.5em;
   width: 25rem;
 `;
-
 export const SpanError = styled.span`
   margin-top: 1px;
   color: #d10202;

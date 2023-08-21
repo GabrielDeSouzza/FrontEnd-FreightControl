@@ -1,4 +1,4 @@
-import { IPhysicalPerson } from './IPessoaFisica';
+import { IPhysicalPerson } from './IPhysicalPerson';
 type IDriver = {
   idDriver?: number;
   PhysicalPerson: IPhysicalPerson;
