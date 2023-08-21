@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   margin: 5px;
 `;
 
-export const Input = styled.input`
+export const Input = styled(IMaskInput)`
   padding-left: 2px;
   font-size: 1.5em;
   height: 3rem;

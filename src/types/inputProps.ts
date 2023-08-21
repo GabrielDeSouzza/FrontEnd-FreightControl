@@ -1,5 +1,4 @@
 import React, { ChangeEvent } from 'react';
-import { Control, ControllerProps } from 'react-hook-form';
 
 export interface InputProps {
   label: string;
@@ -10,6 +9,7 @@ export interface InputProps {
   type: string;
   onClick?: () => void;
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  onBlur?: any;
   messageError?: string;
 }
 export interface InputPropsWithMask extends InputProps {

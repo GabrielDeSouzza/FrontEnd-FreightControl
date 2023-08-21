@@ -46,18 +46,21 @@ export const ComboBox: React.FC<IComboBox> = function ({
           label={label}
           name={name}
           placeholder={placeholder}
-          type="button"
+          type="text"
           value={value}
           messageError={messageError}
           onChange={onChange}
         ></Input>
       </S.DropDownHeader>
-      <S.SpanError>{messageError}</S.SpanError>
       <S.DropDownListContainer isopen={isOpen}>
         {isOpen && (
           <S.DropDownList>
             {data.map((item) => (
-              <S.ListItem key={item} onClick={handleValue(item)}>
+              <S.ListItem
+                onChange={onChange}
+                key={item}
+                onClick={handleValue(item)}
+              >
                 {item}
               </S.ListItem>
             ))}

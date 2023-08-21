@@ -1,29 +1,41 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as S from './styles';
 import { InputPropsWithMask } from 'types/InputProps';
-import { Controller } from 'react-hook-form';
-import { useIMask } from 'react-imask';
+import { Controller, useFormContext } from 'react-hook-form';
 export const InputWithMask: React.FC<InputPropsWithMask> = function ({
   label = 'label',
-  placeholder = 'placeholder',
   name = 'name',
   type = 'text',
   mask,
-  messageError,
-  onChange,
 }) {
-  const mas = useIMask({ mask: mask });
+  const {
+    control,
+    register,
+    watch,
+    formState: { errors },
+  } = useFormContext();
+  const x = watch(name);
+  useEffect(() => {}, [mask]);
+  console.log('sad');
   return (
     <S.Wrapper>
       <S.Label htmlFor={name}> {label}</S.Label>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => (
+          <S.Input
+            {...field}
+            mask={mask}
+            unmask={true}
+            value={field.value}
+            type={type}
+            {...register(name)}
+          />
+        )}
+      />
 
-      <S.Input
-        onChange={onChange}
-        placeholder={placeholder}
-        type={type}
-      ></S.Input>
-
-      <S.SpanError>{messageError}</S.SpanError>
+      <S.SpanError>{errors[name]?.message} </S.SpanError>
     </S.Wrapper>
   );
 };

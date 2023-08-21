@@ -1,8 +1,8 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, forwardRef } from 'react';
 import * as S from './styles';
 import { InputProps } from 'types/InputProps';
-import { Controller } from 'react-hook-form';
 
+// eslint-disable-next-line react/display-name
 export const Input: React.FC<InputProps> = function ({
   label = 'label',
   placeholder = 'placeholder',

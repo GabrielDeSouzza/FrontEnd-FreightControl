@@ -20,12 +20,13 @@ export const DropDownListContainer = styled.div<{ isopen: boolean }>`
 export const DropDownList = styled.ul`
   cursor: pointer;
   list-style: none;
-
+  display: flex;
+  flex-direction: column;
   background: #ffffff;
   width: 25rem;
   border-radius: 0 0 5px 5px;
 `;
-export const ListItem = styled.li`
+export const ListItem = styled.span`
   font-size: 1.3em;
   width: 100%;
   &:hover {

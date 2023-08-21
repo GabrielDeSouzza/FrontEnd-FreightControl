@@ -1,6 +1,8 @@
+import { PersonFormSchemaType } from 'SchemaValidators/personSchemaValidator';
+import { FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled(FormProvider<PersonFormSchemaType>)`
   display: flex;
   flex-direction: column;
   justify-content: center;

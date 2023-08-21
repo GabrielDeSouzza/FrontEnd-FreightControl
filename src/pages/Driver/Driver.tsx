@@ -5,7 +5,7 @@ import InputWithMask from 'components/InputWithMask/InputWithMask';
 import ComboBox from 'components/ComboBox/ComboBox';
 import { UFS } from 'Utilities/AllUFs';
 import { CNHCategory } from 'Utilities/CNH';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import {
   PersonFormSchema,
   PersonFormSchemaType,
@@ -13,24 +13,18 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from 'components/Button/Button';
 const Motorista = function () {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    control,
-  } = useForm<PersonFormSchemaType>({
+  const methods = useForm<PersonFormSchemaType>({
     resolver: zodResolver(PersonFormSchema),
   });
   const onSumit: SubmitHandler<PersonFormSchemaType> = (data) => {
-    alert(data);
     console.log(data);
   };
-  console.log(errors);
+
   return (
     <>
       <Header />
-      <S.Wrapper>
-        <S.Form onSubmit={handleSubmit(onSumit)}>
+      <S.Wrapper {...methods}>
+        <S.Form onSubmit={methods.handleSubmit(onSumit)}>
           <S.Container>
             <S.TittleContainer>Dados Pessoas do Motorista</S.TittleContainer>
             <S.Field>
@@ -38,9 +32,7 @@ const Motorista = function () {
                 label="Nome do Motorista"
                 placeholder="Nome"
                 type="text"
-                {...register('name')}
-                messageError={errors.name?.message}
-                control={control}
+                {...methods.register('name')}
               ></Input>
             </S.Field>
             <S.Field>
@@ -49,9 +41,7 @@ const Motorista = function () {
                 mask="000.0006000-00"
                 placeholder="CPF"
                 type="text"
-                {...register('cpf')}
-                messageError={errors.cpf?.message}
-                control={control}
+                name="cpf"
               />
             </S.Field>
             <S.Field>
@@ -60,9 +50,8 @@ const Motorista = function () {
                 mask="00.000.000-0"
                 placeholder="RG"
                 type="text"
-                {...register('rg')}
-                messageError={errors.rg?.message}
-                control={control}
+                {...methods.register('rg')}
+                name="rg"
               />
             </S.Field>
             <S.Field>
@@ -70,9 +59,7 @@ const Motorista = function () {
                 data={['Masculino', 'Feminino', 'Outro']}
                 placeholder="Genero"
                 label="Genero"
-                {...register('gener')}
-                messageError={errors.gener?.message}
-                control={control}
+                name="gener"
               />
             </S.Field>
             <S.Field>
@@ -80,9 +67,7 @@ const Motorista = function () {
                 placeholder="Data de Nascimento"
                 label="Data de Nascimento"
                 type="date"
-                {...register('birth_date')}
-                messageError={errors.birth_date?.message}
-                control={control}
+                name="birthDateDriver"
               />
             </S.Field>
             <S.Field>
@@ -90,9 +75,7 @@ const Motorista = function () {
                 placeholder="Email"
                 label="Email"
                 type="text"
-                {...register('email')}
-                messageError={errors.email?.message}
-                control={control}
+                name="emailDriver"
               />
             </S.Field>
             <S.Field>
@@ -101,9 +84,7 @@ const Motorista = function () {
                 placeholder="Celular Princial"
                 label="Celular Princial"
                 type="text"
-                {...register('phone1')}
-                messageError={errors.phone1?.message}
-                control={control}
+                name="phone"
               />
             </S.Field>
             <S.Field>
@@ -111,9 +92,7 @@ const Motorista = function () {
                 placeholder="Celular"
                 label="Celular"
                 type="text"
-                {...register('phone2')}
-                messageError={errors.phone2?.message}
-                control={control}
+                name="phone2"
               />
             </S.Field>
             <S.Field>
@@ -121,9 +100,7 @@ const Motorista = function () {
                 placeholder="Telefone reserva"
                 label="Telefone reserva"
                 type="text"
-                {...register('phone3')}
-                messageError={errors.phone3?.message}
-                control={control}
+                name="phone3Driver"
               />
             </S.Field>
             <S.Field>
@@ -132,9 +109,7 @@ const Motorista = function () {
                 mask="00000-000"
                 placeholder="CEP"
                 type="text"
-                {...register('cep')}
-                messageError={errors.cep?.message}
-                control={control}
+                name="cepDriver"
               />
             </S.Field>
             <S.Field>
@@ -142,9 +117,7 @@ const Motorista = function () {
                 placeholder="Logradouro"
                 label="Logradouro"
                 type="text"
-                {...register('public_adress')}
-                messageError={errors.public_adress?.message}
-                control={control}
+                name="publicAdressDriver"
               />
             </S.Field>
             <S.Field>
@@ -152,9 +125,7 @@ const Motorista = function () {
                 placeholder="N°"
                 label="Numero do endereço"
                 type="text"
-                {...register('num_adress')}
-                messageError={errors.num_adress?.message}
-                control={control}
+                name="numAdressDriver"
               />
             </S.Field>
             <S.Field>
@@ -162,9 +133,7 @@ const Motorista = function () {
                 placeholder="Bairro"
                 label="Bairro"
                 type="text"
-                {...register('neighborhood')}
-                messageError={errors.neighborhood?.message}
-                control={control}
+                name="neighborhoodDriver"
               />
             </S.Field>
             <S.Field>
@@ -172,9 +141,7 @@ const Motorista = function () {
                 placeholder="Complemento"
                 label="Complemento"
                 type="text"
-                {...register('complement')}
-                messageError={errors.complement?.message}
-                control={control}
+                name="complementDriver"
               />
             </S.Field>
             <S.Field>
@@ -182,9 +149,7 @@ const Motorista = function () {
                 placeholder="Cidade"
                 label="Cidade"
                 type="text"
-                {...register('city')}
-                messageError={errors.city?.message}
-                control={control}
+                name="cityDriver"
               />
             </S.Field>
             <S.Field>
@@ -192,9 +157,7 @@ const Motorista = function () {
                 data={UFS}
                 placeholder="UF"
                 label="UF"
-                {...register('uf')}
-                messageError={errors.uf?.message}
-                control={control}
+                name="ufDriver"
               />
             </S.Field>
           </S.Container>
@@ -207,7 +170,6 @@ const Motorista = function () {
                 placeholder="Categoria da CNH"
                 onChange={(e) => console.log(e.target.value)}
                 label="Categoria da CNH"
-                control={control}
               />
             </S.Field>
             <S.Field>
@@ -217,7 +179,6 @@ const Motorista = function () {
                 name="driverCNH"
                 placeholder="CNH"
                 type="text"
-                control={control}
               />
             </S.Field>
             <S.Field>
@@ -227,7 +188,6 @@ const Motorista = function () {
                 placeholder="É proprietario do veiculo?"
                 onChange={(e) => console.log(e.target.value)}
                 label="É proprietario do veiculo?"
-                control={control}
               />
             </S.Field>
           </S.Container>
