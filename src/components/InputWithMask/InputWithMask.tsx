@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import * as S from './styles';
 import { InputPropsWithMask } from 'types/InputProps';
 import { Controller, useFormContext } from 'react-hook-form';
+import { IMask } from 'react-imask';
 export const InputWithMask: React.FC<InputPropsWithMask> = function ({
   label = 'label',
   name = 'name',
@@ -11,12 +12,28 @@ export const InputWithMask: React.FC<InputPropsWithMask> = function ({
   const {
     control,
     register,
-    watch,
     formState: { errors },
+    setValue,
   } = useFormContext();
-  const x = watch(name);
-  useEffect(() => {}, [mask]);
-  console.log('sad');
+  React.useEffect(() => {
+    const inputElement = document.querySelector(`input[name="${name}"]`);
+    if (inputElement instanceof HTMLInputElement) {
+      const maskInstance = IMask(inputElement, mask);
+
+      const updateValue = () => {
+        console.log(maskInstance);
+        setValue(name, maskInstance.unmaskedValue);
+      };
+
+      maskInstance.on('accept', updateValue);
+
+      return () => {
+        maskInstance.off('accept', updateValue);
+        maskInstance.destroy();
+      };
+    }
+  }, [name, mask, setValue]);
+  console.log('MErda');
   return (
     <S.Wrapper>
       <S.Label htmlFor={name}> {label}</S.Label>
@@ -35,7 +52,7 @@ export const InputWithMask: React.FC<InputPropsWithMask> = function ({
         )}
       />
 
-      <S.SpanError>{errors[name]?.message} </S.SpanError>
+      <S.SpanError>{errors[name]?.message?.toString()} </S.SpanError>
     </S.Wrapper>
   );
 };

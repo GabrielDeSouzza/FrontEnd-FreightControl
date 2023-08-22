@@ -1,8 +1,8 @@
-import React, { ChangeEvent, forwardRef } from 'react';
+import React from 'react';
 import * as S from './styles';
 import { InputProps } from 'types/InputProps';
+import { Controller, useFormContext } from 'react-hook-form';
 
-// eslint-disable-next-line react/display-name
 export const Input: React.FC<InputProps> = function ({
   label = 'label',
   placeholder = 'placeholder',
@@ -10,22 +10,32 @@ export const Input: React.FC<InputProps> = function ({
   type = 'text',
   onClick,
   onKeyDown,
-  messageError,
-  onChange,
   value,
 }) {
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useFormContext();
   return (
     <S.Wrapper>
       <S.Label htmlFor={name}> {label}</S.Label>
-      <S.Input
-        type={type}
-        placeholder={placeholder}
-        onClick={onClick}
-        onKeyDown={onKeyDown}
-        onChange={onChange}
-        value={value}
-      ></S.Input>
-      <S.SpanError>{messageError}</S.SpanError>
+      <Controller
+        control={control}
+        name={name}
+        render={({ field }) => (
+          <S.Input
+            {...field}
+            type={type}
+            placeholder={placeholder}
+            onClick={onClick}
+            onKeyDown={onKeyDown}
+            value={value}
+          ></S.Input>
+        )}
+      />
+
+      <S.SpanError>{errors[name]?.message?.toString()}</S.SpanError>
     </S.Wrapper>
   );
 };

@@ -1,8 +1,9 @@
+import { DriverFormSchemaType } from 'SchemaValidators/driverSchemaValidationType';
 import { PersonFormSchemaType } from 'SchemaValidators/personSchemaValidator';
 import { FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
 
-export const Wrapper = styled(FormProvider<PersonFormSchemaType>)`
+export const Wrapper = styled(FormProvider<DriverFormSchemaType>)`
   display: flex;
   flex-direction: column;
   justify-content: center;

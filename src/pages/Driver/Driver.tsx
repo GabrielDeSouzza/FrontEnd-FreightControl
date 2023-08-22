@@ -5,26 +5,37 @@ import InputWithMask from 'components/InputWithMask/InputWithMask';
 import ComboBox from 'components/ComboBox/ComboBox';
 import { UFS } from 'Utilities/AllUFs';
 import { CNHCategory } from 'Utilities/CNH';
-import { Controller, SubmitHandler, useForm, useWatch } from 'react-hook-form';
-import {
-  PersonFormSchema,
-  PersonFormSchemaType,
-} from 'SchemaValidators/personSchemaValidator';
+import { SubmitHandler, useForm } from 'react-hook-form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from 'components/Button/Button';
+import {
+  DriverFormSchema,
+  DriverFormSchemaType,
+} from 'SchemaValidators/driverSchemaValidationType';
 const Motorista = function () {
-  const methods = useForm<PersonFormSchemaType>({
-    resolver: zodResolver(PersonFormSchema),
+  const methods = useForm<DriverFormSchemaType>({
+    resolver: zodResolver(DriverFormSchema),
   });
-  const onSumit: SubmitHandler<PersonFormSchemaType> = (data) => {
-    console.log(data);
+  const onSumit: SubmitHandler<DriverFormSchemaType> = async (data) => {
+    try {
+      console.log(data);
+      alert(JSON.stringify(data, null, 2)); // Mostra os dados em um alerta para depuração
+    } catch (error) {
+      console.error('Erro ao enviar o formulário:', error);
+    }
   };
-
+  console.log('Test');
+  console.log(methods.formState.errors);
   return (
     <>
       <Header />
       <S.Wrapper {...methods}>
-        <S.Form onSubmit={methods.handleSubmit(onSumit)}>
+        <S.Form
+          autoComplete="off"
+          onSubmit={methods.handleSubmit(onSumit)}
+          method="post"
+        >
           <S.Container>
             <S.TittleContainer>Dados Pessoas do Motorista</S.TittleContainer>
             <S.Field>
@@ -32,13 +43,13 @@ const Motorista = function () {
                 label="Nome do Motorista"
                 placeholder="Nome"
                 type="text"
-                {...methods.register('name')}
+                name="name"
               ></Input>
             </S.Field>
             <S.Field>
               <InputWithMask
                 label="CPF"
-                mask="000.0006000-00"
+                mask="000.000.000-00"
                 placeholder="CPF"
                 type="text"
                 name="cpf"
@@ -50,7 +61,6 @@ const Motorista = function () {
                 mask="00.000.000-0"
                 placeholder="RG"
                 type="text"
-                {...methods.register('rg')}
                 name="rg"
               />
             </S.Field>
@@ -67,7 +77,7 @@ const Motorista = function () {
                 placeholder="Data de Nascimento"
                 label="Data de Nascimento"
                 type="date"
-                name="birthDateDriver"
+                name={'birth_date'}
               />
             </S.Field>
             <S.Field>
@@ -75,7 +85,7 @@ const Motorista = function () {
                 placeholder="Email"
                 label="Email"
                 type="text"
-                name="emailDriver"
+                name="email"
               />
             </S.Field>
             <S.Field>
@@ -84,11 +94,12 @@ const Motorista = function () {
                 placeholder="Celular Princial"
                 label="Celular Princial"
                 type="text"
-                name="phone"
+                name="phone1"
               />
             </S.Field>
             <S.Field>
-              <Input
+              <InputWithMask
+                mask="(00) 00000-0000"
                 placeholder="Celular"
                 label="Celular"
                 type="text"
@@ -96,11 +107,12 @@ const Motorista = function () {
               />
             </S.Field>
             <S.Field>
-              <Input
+              <InputWithMask
                 placeholder="Telefone reserva"
                 label="Telefone reserva"
                 type="text"
-                name="phone3Driver"
+                name="phone3"
+                mask="(00) 00000-0000"
               />
             </S.Field>
             <S.Field>
@@ -109,7 +121,7 @@ const Motorista = function () {
                 mask="00000-000"
                 placeholder="CEP"
                 type="text"
-                name="cepDriver"
+                name="cep"
               />
             </S.Field>
             <S.Field>
@@ -117,7 +129,7 @@ const Motorista = function () {
                 placeholder="Logradouro"
                 label="Logradouro"
                 type="text"
-                name="publicAdressDriver"
+                name="public_adress"
               />
             </S.Field>
             <S.Field>
@@ -125,7 +137,7 @@ const Motorista = function () {
                 placeholder="N°"
                 label="Numero do endereço"
                 type="text"
-                name="numAdressDriver"
+                name="num_adress"
               />
             </S.Field>
             <S.Field>
@@ -133,7 +145,7 @@ const Motorista = function () {
                 placeholder="Bairro"
                 label="Bairro"
                 type="text"
-                name="neighborhoodDriver"
+                name="neighborhood"
               />
             </S.Field>
             <S.Field>
@@ -141,7 +153,7 @@ const Motorista = function () {
                 placeholder="Complemento"
                 label="Complemento"
                 type="text"
-                name="complementDriver"
+                name="complement"
               />
             </S.Field>
             <S.Field>
@@ -149,16 +161,11 @@ const Motorista = function () {
                 placeholder="Cidade"
                 label="Cidade"
                 type="text"
-                name="cityDriver"
+                name="city"
               />
             </S.Field>
             <S.Field>
-              <ComboBox
-                data={UFS}
-                placeholder="UF"
-                label="UF"
-                name="ufDriver"
-              />
+              <ComboBox data={UFS} placeholder="UF" label="UF" name="uf" />
             </S.Field>
           </S.Container>
           <S.Container>
@@ -166,7 +173,7 @@ const Motorista = function () {
             <S.Field>
               <ComboBox
                 data={CNHCategory}
-                name="driverCNHCategory"
+                name="category"
                 placeholder="Categoria da CNH"
                 onChange={(e) => console.log(e.target.value)}
                 label="Categoria da CNH"
@@ -176,7 +183,7 @@ const Motorista = function () {
               <InputWithMask
                 label="CNH"
                 mask="000.000.000-00"
-                name="driverCNH"
+                name="cnh"
                 placeholder="CNH"
                 type="text"
               />
@@ -184,7 +191,7 @@ const Motorista = function () {
             <S.Field>
               <ComboBox
                 data={['Sim', 'Não']}
-                name="driverIsOwn"
+                name="isOwnVehicle"
                 placeholder="É proprietario do veiculo?"
                 onChange={(e) => console.log(e.target.value)}
                 label="É proprietario do veiculo?"

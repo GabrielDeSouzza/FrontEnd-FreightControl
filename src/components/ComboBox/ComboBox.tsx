@@ -1,22 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import * as S from './styles';
 import { IComboBox } from 'types/IComboBox';
 import Input from 'components/Input/Input';
+import { Controller, useFormContext } from 'react-hook-form';
 export const ComboBox: React.FC<IComboBox> = function ({
   data = [],
   placeholder = '',
   name = 'name',
   label = 'label',
-  messageError,
-  onChange,
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [value, setValue] = useState('');
+  const [value, setOption] = useState('');
   const toggling = () => setIsOpen(!isOpen);
   const handleValue = (item: string) => () => {
-    setValue(item);
+    console.log(name + ' ' + item);
+    setValue(name, item);
+    setOption(item);
+    trigger(name);
     setIsOpen(false);
   };
+  const {
+    control,
+    setValue,
+    formState: { errors },
+    trigger,
+  } = useFormContext();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'ArrowDown') {
@@ -34,33 +42,39 @@ export const ComboBox: React.FC<IComboBox> = function ({
 
   useEffect(() => {
     if (selectedIndex !== null) {
-      setValue(data[selectedIndex]);
+      console.log('dsf');
+      setValue(name, data[selectedIndex]);
+      setOption(data[selectedIndex]);
     }
   }, [data, selectedIndex]);
   return (
     <S.DropDownContainer>
       <S.DropDownHeader>
-        <Input
-          onKeyDown={handleKeyDown}
-          onClick={toggling}
-          label={label}
+        <S.Label htmlFor={name}> {label}</S.Label>
+        <Controller
+          control={control}
           name={name}
-          placeholder={placeholder}
-          type="text"
-          value={value}
-          messageError={messageError}
-          onChange={onChange}
-        ></Input>
+          render={({ field }) => (
+            <S.Wrapper>
+              <S.Input
+                {...field}
+                name={name}
+                type="text"
+                placeholder={placeholder}
+                onClick={toggling}
+                onKeyDown={handleKeyDown}
+                value={value}
+              />
+            </S.Wrapper>
+          )}
+        />
+        <S.SpanError>{errors[name]?.message?.toString()}</S.SpanError>
       </S.DropDownHeader>
       <S.DropDownListContainer isopen={isOpen}>
         {isOpen && (
           <S.DropDownList>
             {data.map((item) => (
-              <S.ListItem
-                onChange={onChange}
-                key={item}
-                onClick={handleValue(item)}
-              >
+              <S.ListItem key={item} onClick={handleValue(item)}>
                 {item}
               </S.ListItem>
             ))}
