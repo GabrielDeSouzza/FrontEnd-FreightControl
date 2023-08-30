@@ -1,6 +1,6 @@
 import Header from 'components/Header/Header';
 import * as S from './styles';
-import Input from 'components/Input/Input';
+import Input from 'components/InputForm/Input';
 import InputWithMask from 'components/InputWithMask/InputWithMask';
 import ComboBox from 'components/ComboBox/ComboBox';
 import { UFS } from 'Utilities/AllUFs';

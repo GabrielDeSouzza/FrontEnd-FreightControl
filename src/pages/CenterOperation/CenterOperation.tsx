@@ -1,4 +1,4 @@
-import Input from 'components/Input/Input';
+import Input from 'components/Input//Input';
 import * as S from './styles';
 import Header from 'components/Header/Header';
 import Link from 'next/link';
@@ -27,7 +27,7 @@ const CenterOperation = function () {
         </S.SearchArea>
         <S.Container>
           <S.Content>
-            <S.linkFromContent value={'/Driver/Driver'} onClick={handleClick}>
+            <S.linkFromContent value={'/Driver'} onClick={handleClick}>
               <S.Image src="/img/x.png"></S.Image>
               Cadastro de motorista
             </S.linkFromContent>

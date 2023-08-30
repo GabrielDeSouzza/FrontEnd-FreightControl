@@ -1,5 +1,4 @@
 import { DriverFormSchemaType } from 'SchemaValidators/driverSchemaValidationType';
-import { PersonFormSchemaType } from 'SchemaValidators/personSchemaValidator';
 import { FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
 

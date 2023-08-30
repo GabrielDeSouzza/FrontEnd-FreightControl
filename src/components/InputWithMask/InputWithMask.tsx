@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import * as S from './styles';
 import { InputPropsWithMask } from 'types/InputProps';
 import { Controller, useFormContext } from 'react-hook-form';

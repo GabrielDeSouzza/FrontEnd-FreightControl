@@ -1,102 +1,67 @@
 import React, { useState } from 'react';
 import * as S from './styles';
 import Header from 'components/Header/Header';
-import { z } from 'zod';
 import api from 'services/api';
-import Input from 'components/Input/Input';
-import { ErrorValidation } from 'types/IErrorValidation';
+import Input from 'components/InputForm/Input';
 import Button from 'components/Button/Button';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
-
-const loginUserFormSchema = z.object({
-  username: z.string().nonempty('Campo usuário é obrigatório'),
-  password: z.string().nonempty('Campo senha é obrigatório'),
-});
+import { useForm, SubmitHandler } from 'react-hook-form';
+import {
+  LoginUserFormSchema,
+  LoginUserFormType,
+} from 'SchemaValidators/userSchemaValidador';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorValidation, setErrorValidation] = useState<ErrorValidation[]>([]);
-  const [validateUSer, setValidationUser] = useState<string>('');
+  const methods = useForm<LoginUserFormType>({
+    resolver: zodResolver(LoginUserFormSchema),
+  });
+  const [error, setError] = useState('');
   const router = useRouter();
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const onSubmit: SubmitHandler<LoginUserFormType> = async (data) => {
     try {
-      const data = loginUserFormSchema.parse({ username, password });
       const result = await api.post('/api/login', data);
       if (result.data) {
         localStorage.setItem('token', result.data);
         router.push('/CenterOperation/CenterOperation');
       }
-      setErrorValidation([]);
-      setValidationUser('');
     } catch (error) {
       console.error(error);
-      if (error instanceof z.ZodError) {
-        console.log(error);
-        const erros: ErrorValidation[] = error.issues.map((issue) => ({
-          message: issue.message,
-          path: issue.path.toString(),
-        }));
-        setErrorValidation(erros);
-        return;
-      } else if (error instanceof AxiosError) {
+      if (error instanceof AxiosError) {
         switch (error.code) {
           case AxiosError.ERR_NETWORK:
-            setValidationUser('Erro no servidor tente novamente');
+            setError('Erro no servidor tente novamente');
             break;
           case AxiosError.ERR_BAD_REQUEST:
-            setValidationUser('Senha ou usuario invalida');
+            setError('Senha ou usuario invalida');
             break;
         }
       } else {
-        setValidationUser('');
-        setErrorValidation([]);
+        setError('');
       }
     }
   };
 
   return (
-    <S.Wrapper>
+    <S.Wrapper {...methods}>
       <Header />
-      <S.Form method="post" onSubmit={handleSubmit}>
+      <S.Form method="post" onSubmit={methods.handleSubmit(onSubmit)}>
         <S.InputsArea>
           <Input
             label="Usuario"
-            name="Usuario"
+            name="username"
             placeholder="Digite o seu usuario"
             type="text"
-            onChange={(e) => setUsername(e.target.value)}
           ></Input>
-          {errorValidation
-            ? errorValidation?.map((erro) => (
-                <S.spanError key="Error">
-                  {erro.path === 'username' ? erro.message : ''}
-                </S.spanError>
-              ))
-            : null}
           <Input
             label="Senha"
-            name="senha"
+            name="password"
             placeholder="Digite o sua Senha"
             type="text"
-            onChange={(e) => setPassword(e.target.value)}
           ></Input>
-          {errorValidation
-            ? errorValidation?.map((erro) => (
-                <S.spanError key="erro validation">
-                  {erro.path === 'password' ? erro.message : ''}
-                </S.spanError>
-              ))
-            : null}
         </S.InputsArea>
-        {validateUSer.length > 0 ? (
-          <S.spanError>{validateUSer}</S.spanError>
-        ) : (
-          ''
-        )}
+        <S.spanError>{error}</S.spanError>
         <Button value="Logar-se" typeButton=""></Button>
       </S.Form>
     </S.Wrapper>

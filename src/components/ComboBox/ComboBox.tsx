@@ -1,7 +1,6 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React from 'react';
 import * as S from './styles';
 import { IComboBox } from 'types/IComboBox';
-import Input from 'components/Input/Input';
 import { Controller, useFormContext } from 'react-hook-form';
 export const ComboBox: React.FC<IComboBox> = function ({
   data = [],
@@ -9,8 +8,8 @@ export const ComboBox: React.FC<IComboBox> = function ({
   name = 'name',
   label = 'label',
 }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [value, setOption] = useState('');
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [value, setOption] = React.useState('');
   const toggling = () => setIsOpen(!isOpen);
   const handleValue = (item: string) => () => {
     console.log(name + ' ' + item);
@@ -25,7 +24,7 @@ export const ComboBox: React.FC<IComboBox> = function ({
     formState: { errors },
     trigger,
   } = useFormContext();
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'ArrowDown') {
       event.preventDefault();
@@ -40,13 +39,13 @@ export const ComboBox: React.FC<IComboBox> = function ({
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (selectedIndex !== null) {
       console.log('dsf');
       setValue(name, data[selectedIndex]);
       setOption(data[selectedIndex]);
     }
-  }, [data, selectedIndex]);
+  }, [data, name, selectedIndex, setValue]);
   return (
     <S.DropDownContainer>
       <S.DropDownHeader>

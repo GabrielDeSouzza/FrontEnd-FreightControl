@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import Motorista from './Driver';
+import Motorista from '.';
 
 describe('<Motorista />', () => {
   it('should render the heading', () => {
