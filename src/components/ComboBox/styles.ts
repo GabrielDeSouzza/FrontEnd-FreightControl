@@ -49,13 +49,6 @@ export const Label = styled.label`
   width: 25rem;
 `;
 
-export const SpanError = styled.span`
-  margin-top: 1px;
-  color: #d10202;
-  font-size: 1.3rem;
-  align-self: flex-start;
-`;
-
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;

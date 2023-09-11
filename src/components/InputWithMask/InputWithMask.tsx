@@ -3,6 +3,7 @@ import * as S from './styles';
 import { InputPropsWithMask } from 'types/InputProps';
 import { Controller, useFormContext } from 'react-hook-form';
 import { IMask } from 'react-imask';
+import { SpanError } from 'components/SpanError/SpanError';
 export const InputWithMask: React.FC<InputPropsWithMask> = function ({
   label = 'label',
   name = 'name',
@@ -33,7 +34,7 @@ export const InputWithMask: React.FC<InputPropsWithMask> = function ({
       };
     }
   }, [name, mask, setValue]);
-  console.log('MErda');
+
   return (
     <S.Wrapper>
       <S.Label htmlFor={name}> {label}</S.Label>
@@ -52,7 +53,7 @@ export const InputWithMask: React.FC<InputPropsWithMask> = function ({
         )}
       />
 
-      <S.SpanError>{errors[name]?.message?.toString()} </S.SpanError>
+      <SpanError message={errors[name]?.message?.toString()} />
     </S.Wrapper>
   );
 };

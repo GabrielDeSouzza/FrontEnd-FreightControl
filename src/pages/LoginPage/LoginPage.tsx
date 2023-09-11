@@ -12,6 +12,7 @@ import {
   LoginUserFormType,
 } from 'SchemaValidators/userSchemaValidador';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { SpanError } from 'components/SpanError/SpanError';
 
 const LoginPage = () => {
   const methods = useForm<LoginUserFormType>({
@@ -61,7 +62,7 @@ const LoginPage = () => {
             type="text"
           ></Input>
         </S.InputsArea>
-        <S.spanError>{error}</S.spanError>
+        <SpanError message={error} />
         <Button value="Logar-se" typeButton=""></Button>
       </S.Form>
     </S.Wrapper>

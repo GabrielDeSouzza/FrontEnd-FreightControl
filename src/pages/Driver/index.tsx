@@ -13,20 +13,65 @@ import {
   DriverFormSchema,
   DriverFormSchemaType,
 } from 'SchemaValidators/driverSchemaValidationType';
+import api from 'services/api';
+import { useState } from 'react';
+import SpanMenssagem from 'components/SpanMessage/SpanMessage';
+import { IMessageResult } from 'types/IMessageResults';
+import { searchCEP } from 'Utilities/searchCEP';
+import { Buttom } from 'components/Button/styles';
+import { ICEPResponse } from 'types/ICepResponse';
 const Motorista = function () {
   const methods = useForm<DriverFormSchemaType>({
     resolver: zodResolver(DriverFormSchema),
   });
+  const [message, setMessage] = useState<IMessageResult>();
+  const [publicAdress, setPublicAdress] = useState('');
+  const [city, setCity] = useState('');
+  const [uf, setUf] = useState('');
+  const [neighborhood, setNeighborhood] = useState('');
+  const [complement, setComplement] = useState('');
   const onSumit: SubmitHandler<DriverFormSchemaType> = async (data) => {
     try {
-      console.log(data);
-      alert(JSON.stringify(data, null, 2)); // Mostra os dados em um alerta para depuração
+      const result = await api.post('api/create/driver', data, {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      });
+      console.log(result);
+      setMessage({
+        message: 'Motorista Cadastrado com Sucesso',
+        isSucess: true,
+        visible: true,
+        setVisible: setMessage,
+      });
     } catch (error) {
       console.error('Erro ao enviar o formulário:', error);
+      setMessage({
+        message: 'Erro ao cadastrar motorista',
+        isSucess: false,
+        visible: true,
+        setVisible: setMessage,
+      });
     }
   };
-  console.log('Test');
-  console.log(methods.formState.errors);
+  const handleSearchCEP = async () => {
+    const cep = methods.getValues('cep');
+    console.log(cep + ' sdasds');
+    if (cep) {
+      const data: ICEPResponse = await searchCEP(cep);
+      setPublicAdress(data.public_adress);
+      methods.setValue('public_adress', data.public_adress);
+      setCity(data.city);
+      methods.setValue('city', data.city);
+      (data && data.complement.length > 0) ?? setComplement(data.complement);
+      methods.setValue('complement', data.complement);
+      setNeighborhood(data.neighborhood);
+      methods.setValue('neighborhood', data.neighborhood);
+      setUf(data.uf);
+      methods.setValue('uf', data.uf);
+      methods.trigger();
+    }
+  };
   return (
     <>
       <Header />
@@ -123,6 +168,9 @@ const Motorista = function () {
                 type="text"
                 name="cep"
               />
+              <Buttom type="button" onClick={handleSearchCEP}>
+                Pesquisar CEP{' '}
+              </Buttom>
             </S.Field>
             <S.Field>
               <Input
@@ -130,6 +178,7 @@ const Motorista = function () {
                 label="Logradouro"
                 type="text"
                 name="public_adress"
+                value={publicAdress || undefined}
               />
             </S.Field>
             <S.Field>
@@ -146,6 +195,7 @@ const Motorista = function () {
                 label="Bairro"
                 type="text"
                 name="neighborhood"
+                value={neighborhood}
               />
             </S.Field>
             <S.Field>
@@ -154,6 +204,7 @@ const Motorista = function () {
                 label="Complemento"
                 type="text"
                 name="complement"
+                value={complement || undefined}
               />
             </S.Field>
             <S.Field>
@@ -162,10 +213,17 @@ const Motorista = function () {
                 label="Cidade"
                 type="text"
                 name="city"
+                value={city}
               />
             </S.Field>
             <S.Field>
-              <ComboBox data={UFS} placeholder="UF" label="UF" name="uf" />
+              <ComboBox
+                data={UFS}
+                placeholder="UF"
+                label="UF"
+                name="uf"
+                value={uf}
+              />
             </S.Field>
           </S.Container>
           <S.Container>
@@ -199,6 +257,14 @@ const Motorista = function () {
             </S.Field>
           </S.Container>
           <Button typeButton="submit" value="Cadastrar Motorista"></Button>
+          {message?.message ? (
+            <SpanMenssagem
+              message={message?.message}
+              isSucess={message?.isSucess}
+              setVisible={setMessage}
+              visible={true}
+            />
+          ) : null}
         </S.Form>
       </S.Wrapper>
     </>

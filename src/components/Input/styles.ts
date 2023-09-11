@@ -21,10 +21,3 @@ export const Label = styled.label`
   font-size: 1.5em;
   width: 25rem;
 `;
-
-export const SpanError = styled.span`
-  margin-top: 1px;
-  color: #d10202;
-  font-size: 1.3rem;
-  align-self: flex-start;
-`;

@@ -38,7 +38,9 @@ export const PersonFormSchema = z.object({
     .string({ required_error: 'Preencha o Endereço' })
     .min(1, 'Digite o numero do endereço'),
   complement: z.string({ required_error: 'Preencha o Bairro' }).optional(),
-  neighborhood: z.string().min(1, 'Digite o Bairro'),
+  neighborhood: z
+    .string({ required_error: 'Preencha o bairro' })
+    .min(1, 'Digite o Bairro'),
   city: z
     .string({ required_error: 'Preencha o Cidade' })
     .min(1, 'digite uma cidade'),

@@ -2,14 +2,16 @@ import React from 'react';
 import * as S from './styles';
 import { IComboBox } from 'types/IComboBox';
 import { Controller, useFormContext } from 'react-hook-form';
+import { SpanError } from 'components/SpanError/SpanError';
 export const ComboBox: React.FC<IComboBox> = function ({
   data = [],
   placeholder = '',
   name = 'name',
   label = 'label',
+  value,
 }) {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [value, setOption] = React.useState('');
+  const [option, setOption] = React.useState('');
   const toggling = () => setIsOpen(!isOpen);
   const handleValue = (item: string) => () => {
     console.log(name + ' ' + item);
@@ -58,16 +60,16 @@ export const ComboBox: React.FC<IComboBox> = function ({
               <S.Input
                 {...field}
                 name={name}
-                type="text"
+                type="button"
                 placeholder={placeholder}
                 onClick={toggling}
                 onKeyDown={handleKeyDown}
-                value={value}
+                value={option || value}
               />
             </S.Wrapper>
           )}
         />
-        <S.SpanError>{errors[name]?.message?.toString()}</S.SpanError>
+        <SpanError message={errors[name]?.message?.toString()} />
       </S.DropDownHeader>
       <S.DropDownListContainer isopen={isOpen}>
         {isOpen && (

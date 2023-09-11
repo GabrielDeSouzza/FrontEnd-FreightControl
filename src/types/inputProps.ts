@@ -4,7 +4,7 @@ export interface InputProps {
   label: string;
   placeholder: string;
   name: string;
-  value?: string;
+  value?: string | undefined;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   type: string;
   onClick?: () => void;

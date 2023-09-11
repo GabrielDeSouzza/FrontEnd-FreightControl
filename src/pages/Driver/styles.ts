@@ -8,6 +8,7 @@ export const Wrapper = styled(FormProvider<DriverFormSchemaType>)`
   justify-content: center;
   flex-wrap: wrap;
   align-items: center;
+  background-color: bisque;
 `;
 
 export const Form = styled.form`
@@ -21,12 +22,13 @@ export const Form = styled.form`
   justify-content: flex-start;
   align-content: flex-start;
   border-radius: 15px;
+  background-color: aliceblue;
 `;
 
 export const Field = styled.div`
   margin: 10px;
   width: 300px;
-  height: 70px;
+  min-height: 70px;
   border: 10px;
   display: flex;
   flex-direction: column;
